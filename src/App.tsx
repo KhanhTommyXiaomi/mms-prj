@@ -1,5 +1,11 @@
+import MBOSettingFeature from './features/mbo-setting'
+
 const App = () => {
-  return <h1>Hello MMS project</h1>
+  return (
+    <div>
+      <MBOSettingFeature />
+    </div>
+  )
 }
 
 export default App
