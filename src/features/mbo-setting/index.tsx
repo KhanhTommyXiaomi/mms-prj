@@ -1,6 +1,8 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch } from '../../store'
 import { increment, selectCount } from './reducer/counter'
+import goalCycleSettingApi from './api/goalCycleSettingApi'
+import { useEffect } from 'react'
 
 const MBOSettingFeature = () => {
   const { count } = useSelector(selectCount)
@@ -9,6 +11,13 @@ const MBOSettingFeature = () => {
     const action = increment(1)
     dispatch(action)
   }
+  const getDetailTodo = async () => {
+    const res = await goalCycleSettingApi.getDetailTodo('1')
+    console.log(res)
+  }
+  useEffect(() => {
+    getDetailTodo()
+  }, [])
   return (
     <div>
       <div>{count}</div>

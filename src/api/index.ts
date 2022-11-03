@@ -1,4 +1,4 @@
-import axios from 'axios'
+import axios, { AxiosResponse } from 'axios'
 import { ApiConstant } from '../const'
 import HttpClient from './httpClient'
 
@@ -33,11 +33,16 @@ const getCredentialWithAccessToken = (config: any = {}) => {
   }
 }
 
-export const MboApi = new HttpClient(
-  axios.create(mboSettingDefaultConfig),
-  getCredentialWithAccessToken
-)
-export const OneOnOneApi = new HttpClient(
-  axios.create(oneOnOneDefaultConfig),
-  getCredentialWithAccessToken
-)
+const configInterceptors = (axiosClient: any) => {
+  axiosClient.interceptors.response.use(
+    (res: AxiosResponse) => res.data,
+    (err: Error) => Promise.reject(err)
+  )
+  return axiosClient
+}
+
+const mboAxiosClient = configInterceptors(axios.create(mboSettingDefaultConfig))
+const oneOnOneAxiosClient = configInterceptors(axios.create(oneOnOneDefaultConfig))
+
+export const MboApi = new HttpClient(mboAxiosClient, getCredentialWithAccessToken)
+export const OneOnOneApi = new HttpClient(oneOnOneAxiosClient, getCredentialWithAccessToken)
