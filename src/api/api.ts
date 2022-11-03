@@ -1,6 +1,7 @@
-import { AxiosRequestConfig } from 'axios'
+import axios, { AxiosResponse, AxiosRequestConfig } from 'axios'
+import { ApiConstant } from '../const'
 
-export default class HttpClient {
+class HttpService {
   axios: any
   getCredential: any
   constructor(axios: any, getCredential: any) {
@@ -32,3 +33,38 @@ export default class HttpClient {
     return this.axios.delete(url, config)
   }
 }
+
+const defaultConfig = {
+  baseURL: 'https://jsonplaceholder.typicode.com',
+  headers: {
+    ...ApiConstant.HEADER_DEFAULT,
+  },
+  timeout: ApiConstant.TIMEOUT,
+}
+
+const getCredentialWithAccessToken = (config: any = {}) => {
+  const accessToken = 'blabla'
+  const accessTokenKey = 'access-token'
+  if (!accessToken) return config
+  return {
+    ...config,
+    headers: {
+      ...(config.headers || {}),
+      [accessTokenKey]: accessToken,
+    },
+  }
+}
+
+const configInterceptors = (axiosClient: any) => {
+  axiosClient.interceptors.response.use(
+    (res: AxiosResponse) => res.data,
+    (err: Error) => Promise.reject(err)
+  )
+  return axiosClient
+}
+
+const axiosClient = configInterceptors(axios.create(defaultConfig))
+
+const ApiClient = new HttpService(axiosClient, getCredentialWithAccessToken)
+
+export default ApiClient

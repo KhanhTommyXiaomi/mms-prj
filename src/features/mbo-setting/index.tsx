@@ -1,7 +1,7 @@
 import { useSelector, useDispatch } from 'react-redux'
 import { AppDispatch } from '../../store'
 import { increment, selectCount } from './reducer/counter'
-import goalCycleSettingApi from './api/goalCycleSettingApi'
+import TodoService from './services/todo.service'
 import { useEffect } from 'react'
 
 const MBOSettingFeature = () => {
@@ -12,7 +12,7 @@ const MBOSettingFeature = () => {
     dispatch(action)
   }
   const getDetailTodo = async () => {
-    const res = await goalCycleSettingApi.getDetailTodo('1')
+    const res = await TodoService.getDetailTodoApi('1')
     console.log(res)
   }
   useEffect(() => {
