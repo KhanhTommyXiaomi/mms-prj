@@ -3,7 +3,8 @@ import { Provider } from 'react-redux'
 import App from '@/App'
 import { store } from '@/store'
 
-import './languages'
+import '@/languages'
+import '@/ui/styles'
 
 const rootContainerEl = document.getElementById('root') as HTMLElement
 const ReactDOMRoot = ReactDOM.createRoot(rootContainerEl)
